@@ -16,6 +16,15 @@
   <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\com.chuusai\shapeless_2.10\jars\shapeless_2.10-1.2.4.jar" kind="lib"></classpathentry>
   <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\com.typesafe.akka\akka-actor_2.10\jars\akka-actor_2.10-2.2.1.jar" kind="lib"></classpathentry>
   <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\com.typesafe\config\bundles\config-1.0.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\org.mongodb\casbah-commons_2.10\jars\casbah-commons_2.10-2.6.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\com.github.nscala-time\nscala-time_2.10\jars\nscala-time_2.10-0.2.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\joda-time\joda-time\jars\joda-time-2.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\org.joda\joda-convert\jars\joda-convert-1.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\org.slf4j\slf4j-api\jars\slf4j-api-1.6.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\org.mongodb\mongo-java-driver\jars\mongo-java-driver-2.11.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\org.mongodb\casbah-core_2.10\jars\casbah-core_2.10-2.6.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\org.mongodb\casbah-query_2.10\jars\casbah-query_2.10-2.6.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\org.mongodb\casbah-gridfs_2.10\jars\casbah-gridfs_2.10-2.6.2.jar" kind="lib"></classpathentry>
   <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\io.spray\spray-testkit\jars\spray-testkit-1.2-20130822.jar" kind="lib"></classpathentry>
   <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\com.typesafe.akka\akka-testkit_2.10\bundles\akka-testkit_2.10-2.2.1.jar" kind="lib"></classpathentry>
   <classpathentry path="C:\Users\kgrad.RSI\.ivy2\cache\org.specs2\specs2_2.10\jars\specs2_2.10-1.14.jar" kind="lib"></classpathentry>
