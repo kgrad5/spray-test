@@ -23,16 +23,17 @@ class MyServiceActor extends Actor with MyService {
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
 
+  case class Name(fname: String, lname:String) {
+    require(fname.size > 0, "First name cannot be blank")
+    require(lname.size > 0, "Last name cannot be blank")
+  }
+  
   val myRoute =
-    path("") {
-      get {
-        respondWithMediaType(`text/html`) { // XML is marshalled to `text/xml` by default, so we simply override here
+path("hello") { 
+      get{
+        parameters('fname.as[String], 'lname.as[String]).as(Name) { name =>
           complete {
-            <html>
-              <body>
-                <h1>Say hello to <i>spray-routing</i> on <i>spray-can</i>!</h1>
-              </body>
-            </html>
+            "Hello, " + name.fname + " " + name.lname + "!"
           }
         }
       }
