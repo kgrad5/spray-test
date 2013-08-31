@@ -2,9 +2,9 @@ package com.example
 
 import akka.actor.Actor
 import spray.routing._
-import spray.http._
-import java.io.File
+import com.github.nscala_time.time.Imports._
 import com.mongodb.casbah.Imports._
+import com.mongodb.casbah.commons.conversions.scala._
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -20,32 +20,48 @@ class MyServiceActor extends Actor with MyService {
   def receive = runRoute(myRoute)
 }
 
-
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
-  
-  val db = MongoClient("localhost", 27017)("hello")("hello")
-  
-  case class Name(fname: String, lname:String) {
-    require(fname.size > 0, "First name cannot be blank")
-    require(lname.size > 0, "Last name cannot be blank")
+
+  RegisterConversionHelpers()
+  RegisterJodaTimeConversionHelpers()
+  val db = MongoClient("localhost", 27017)("logserver")("logs")
+
+  case class LogItem(app: String, payload: String) {
+    require(app match {
+      case "iTAM" => true
+      case _ => false
+    }, "Application not recognized")
+    require(payload.length() > 0, "Payload must be non-empty")
   }
-  
-  val myRoute = path("hello") { 
-      get{
-        parameters('fname.as[String], 'lname.as[String]).as(Name) { name =>
-          complete {
-            db.save(MongoDBObject("fname" -> name.fname, "lname" -> name.lname))
-            "Hello, " + name.fname + " " + name.lname + "!"
-          }
-        }
-      }
-    }~
-    path("list") {
-      get{        
-        complete{
-          db.find().toList.map(_.toString()) mkString("\n")
+
+  val myRoute = path("log") {
+    get {
+      parameters('app.as[String], 'payload.as[String]).as(LogItem) { item =>
+        complete {
+          val record = MongoDBObject("app" -> item.app, "payload" -> item.payload, "time" -> DateTime.now)
+          db.save(record)
+          db.findOne(record) mkString
         }
       }
     }
+  } ~
+    path("list") {
+      get {
+        complete {
+          db.find().toList.map(_.toString()) mkString ("\n")
+        }
+      }
+    } ~
+    path("list-today") {
+      get {
+        complete {
+          val start = DateTime.yesterday.hour(23).minute(59).second(59)
+          val end = DateTime.now.hour(23).minute(59).second(59)
+          val query: DBObject = $and("time" $gt start $lte end)
+          db.find(query).toList.map(_.toString()) mkString ("\n")
+        }
+      }
+    }
+
 }
