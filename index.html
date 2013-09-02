@@ -1,0 +1,19 @@
+<html>
+  <head>
+    <title>Log Insert</title>
+  </head>
+  <body>
+    <form id="form" action="http://localhost:8080/log" method="post">
+      <select id="application" name="app">
+        <option value="iTAM">iTAM</option>
+      </select>
+      <select id="action" name="action">
+        <option value="CREATE">Create</option>
+        <option value="UPDATE">Update</option>
+        <option value="DELETE">Delete</option>
+      </select>
+      <input id="payload" type="text" name="payload" label="Payload"></input>
+      <input type="submit"></input>
+    </form>
+  </body>
+</html>
