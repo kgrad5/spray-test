@@ -5,6 +5,7 @@ import spray.routing._
 import com.github.nscala_time.time.Imports._
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.conversions.scala._
+import spray.httpx.encoding._
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -27,21 +28,30 @@ trait MyService extends HttpService {
   RegisterJodaTimeConversionHelpers()
   val db = MongoClient("localhost", 27017)("logserver")("logs")
 
-  case class LogItem(app: String, payload: String) {
+  case class LogItem(app: String, action: String, payload: String) {
     require(app match {
       case "iTAM" => true
       case _ => false
     }, "Application not recognized")
+    require(action match {
+      case "CREATE" => true
+      case "UPDATE" => true
+      case "DELETE" => true
+      case _ => false
+    }, "Invalid action")
     require(payload.length() > 0, "Payload must be non-empty")
   }
 
   val myRoute = path("log") {
-    get {
-      parameters('app.as[String], 'payload.as[String]).as(LogItem) { item =>
-        complete {
-          val record = MongoDBObject("app" -> item.app, "payload" -> item.payload, "time" -> DateTime.now)
-          db.save(record)
-          db.findOne(record) mkString
+    post {
+      (decodeRequest(Gzip) | decodeRequest(NoEncoding)){
+        anyParams('app.as[String], 'action.as[String], 'payload.as[String]).as(LogItem) { item =>
+          complete {
+            val record = MongoDBObject("app" -> item.app, "action" -> item.action,
+              "payload" -> item.payload, "time" -> DateTime.now)
+            db.save(record)
+            db.findOne(record) mkString
+          }
         }
       }
     }
